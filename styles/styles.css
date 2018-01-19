@@ -1,0 +1,64 @@
+/*Sarah Elkhart
+18 January 2018
+styles.css*/
+
+/*********CLASS STYLES************/
+.home-photo .image-holder {
+    display:table-cell;
+    background:url(../images/sunCuddle.jpg);
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
+.testimonial {
+    font-style:italic;
+    border-bottom:none;
+    font-size: 12px;
+}
+
+.form-container{
+    width:950px;
+}
+
+/*ELEMENT STYLES *******************/
+
+img {
+    vertical-align:middle;
+    border-style:none;
+    height:200px;
+}
+
+
+p {
+    margin-top:0;
+    margin-bottom:1rem;
+    border-bottom:2px solid rgb(244,242,242);
+}
+
+
+
+form h2{
+    font-size:30px;
+}
+
+form{
+    width:450px;
+}
+
+/*INDIVIDUAL ID STYLES*********/
+
+
+#intro {
+    border-bottom:2px solid rgb(244,242,242);
+}
+
+#aboutus {
+    font-weight:bold;
+    font-size:14px;color:rgb(0,0,0);
+}
+
+#picSide
+{
+    background-color:#31373a;width:450px;
+}
