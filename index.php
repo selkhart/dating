@@ -14,12 +14,29 @@ $f3 = Base::instance();
 $f3->set('DEBUG',3);
 
 //set default route to home.html
-$f3->route('GET /', function(){
+$f3->route('GET|POST /', function() {
+    echo Template::instance()->render('pages/home.html');
+});
 
-    //instantiate a template to integrate data into page easier
-    $template = new Template();
-    echo $template->render('pages/home.html');
+//set route to personal information page
+$f3->route('GET|POST /myInfo', function() {
+    echo Template::instance()->render('pages/personal_information.php');
+});
+
+//set route to profile page
+$f3->route('GET|POST /profile', function() {
+    echo Template::instance()->render('pages/profile.php');
+});
+
+//set route to interests page
+$f3->route('GET|POST /interests', function() {
+    echo Template::instance()->render('pages/interests.php');
+});
+
+//set route to summary
+$f3->route('GET|POST /summary', function() {
+    echo Template::instance()->render('pages/summary.php');
 });
 
 //run fat free
-$f3->run();
+//$f3->run();
