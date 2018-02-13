@@ -4,10 +4,10 @@
 //17 January 2018
 //index.php
 //start a session
-session_start();
 
 //require the autoload file
 require_once('vendor/autoload.php');
+session_start();
 
 //create an instance of the Base Class
 $f3 = Base::instance();
@@ -21,15 +21,40 @@ $f3->route('GET|POST /', function() {
 });
 
 //set route to personal information page
-$f3->route('GET|POST /myInfo', function() {
+$f3->route('GET|POST /myInfo', function($f3) {
     $_SESSION['inputFirstName'] = $_POST['inputFirstName'];
     $_SESSION['inputLastName'] = $_POST['inputLastName'];
     $_SESSION['inputAge'] = $_POST['inputAge'];
     $_SESSION['gender'] = $_POST['gender'];
     $_SESSION['inputPhone'] = $_POST['inputPhone'];
 
+    if(isset($_POST['submit']))
+    {
+       $inputFirstName = $_POST['inputFirstName'];
+       $inputLastName = $_POST['inputLastName'];
+       $inputAge = $_POST['inputAge'];
 
-    echo Template::instance()->render('pages/personal_information.html');
+
+        include "model/validation.php";
+
+        $f3->set('errors',$errors);
+
+        echo print_r($errors);
+        echo print_r($_POST);
+
+        if($errors)
+        {
+            $f3->set('inputFirstName',$inputFirstName);
+            $f3->set('inputLastName',$inputLastName);
+            $f3->set('inputAge',$inputAge);
+
+            echo Template::instance()->render('pages/personal_information.html');
+
+        }
+        echo "TOYGAN";
+
+    }
+   echo Template::instance()->render('pages/personal_information.html');
 });
 
 //set route to profile page
@@ -50,6 +75,9 @@ $f3->route('GET|POST /interests', function() {
 //set route to summary
 $f3->route('GET|POST /summary', function($f3) {
 
+    $_SESSION['indoors'] = $_POST['indoors'];
+    $_SESSION['outdoors'] = $_POST['outdoors'];
+
     $f3->set('firstName', $_SESSION['inputFirstName']);
     $f3->set('lastName', $_SESSION['inputLastName']);
     $f3->set('age', $_SESSION['inputAge']);
@@ -61,7 +89,10 @@ $f3->route('GET|POST /summary', function($f3) {
     $f3->set('bio', $_SESSION['inputBiography']);
     $f3->set('indoors', $_SESSION['indoors']);
     $f3->set('outdoors', $_SESSION['outdoors']);
-    echo Template::instance()->render('pages/summary.html');
+    $template = new Template();
+    echo $template->render('pages/summary.html');
+
+
 });
 
 //run fat free

@@ -33,23 +33,34 @@
         <div class="card-block">
             <h2>Personal Information</h2>
             <hr>
+
             <!-- OPEN FORM-->
-            <form action="./dating/profile" method="post">
+            <form action="" method="post">
                 <div class="row h-100">
                     <div class="col-md-8 justify-content-start" id="formBody">
                         <!-- FIRST NAME -->
                         <div class="form-group">
                             <label for="inputFirstName">First Name</label>
+                            <check if="{{@errors['inputFirstName']}}">
+                                <p>{{@errors['inputFirstName']}}</p>
+                            </check>
                             <input type="text" class="form-control" id="inputFirstName" aria-describedby="firstName" placeholder="Enter First Name">
                         </div>
                         <!-- LAST NAME -->
                         <div class="form-group">
                             <label for="inputLastName">Last Name</label>
+                            <check if="{{@errors['inputLastName']}}">
+                                <p>{{@errors['inputLastName']}}</p>
+                            </check>
                             <input type="text" class="form-control" id="inputLastName" placeholder="Enter Last Name">
                         </div>
+
                         <!--AGE-->
                         <div class="form-group">
                             <label for="inputAge">Age</label>
+                            <check if="{{@errors['inputAge']}}">
+                                <p>{{@errors['inputAge']}}</p>
+                            </check>
                             <input type="text" class="form-control" id="inputAge" placeholder="Enter Age">
                         </div>
                         <!--GENDER-->
@@ -80,7 +91,8 @@
                         </div>
                         <!-- BUTTON -->
                         <div class="d-flex align-items-end justify-content-end w-100" id="buttonSection">
-                            <a href="../dating/profile" class="btn btn-primary mx-auto home-btn mb-5">Next > </a>
+
+                            <input type="submit" name="submit" value="Next >">
                         </div>
                     </div>
                 </div>
