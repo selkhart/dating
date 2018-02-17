@@ -148,7 +148,7 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
 
                         $primeMember = $_SESSION['primeMember'];
 
-                       $primeMember->setIndoorActivities($chosenIndoorActivities);
+                        $primeMember->setIndoorActivities($chosenIndoorActivities);
                         $primeMember->setOutdoorActivities($chosenOutdoorActivities);
 
                         $_SESSION['indoorActivities'] = $chosenIndoorActivities;
@@ -175,8 +175,7 @@ $f3->route('GET|POST /pages/results', function ($f3) {
 
     $primeMember = $_SESSION['primeMember'];
 
-
-    $f3->set('primeMember', $_SESSION['primeMember']);
+    $f3->set('primeMember', 'primeMember');
 
     if (isset($_SESSION) && !empty($_SESSION)) {
 
@@ -187,16 +186,17 @@ $f3->route('GET|POST /pages/results', function ($f3) {
         //var_dump($primeMember);
 
         //info for all memebers
+        $fname = $primeMember->getFname();
 
-        $f3->set('fname', $primeMember->getFname());
+        // $f3->set('fname', $primeMember->getFname());
         $f3->set('lname', $primeMember->getLname());
         $f3->set('gender', $primeMember->getGender());
         $f3->set('age', $primeMember->getAge());
         $f3->set('phone', $primeMember->getPhone());
-        $f3->set('email', $_SESSION['email']);
-        $f3->set('state', $_SESSION['state']);
-        $f3->set('biography', $_SESSION['biography']);
-        $f3->set('genderLook', $_SESSION['genderLook']);
+        /*   $f3->set('email', $_SESSION['email']);
+           $f3->set('state', $_SESSION['state']);
+           $f3->set('biography', $_SESSION['biography']);
+           $f3->set('genderLook', $_SESSION['genderLook']);*/
 
         //interests
         $f3->set('combineActivities', $combineActivities);
