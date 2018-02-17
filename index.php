@@ -173,38 +173,31 @@ function exists(&$variable)
 {
     return isset($variable) && !empty($variable);
 }
+
 //define a default rote to render home.html
 $f3->route('GET|POST /pages/results', function ($f3) {
 
     $primeMember = $_SESSION['primeMember'];
 
-
-    $f3->set('primeMember', 'primeMember');
+    $f3->set('primeMember', $primeMember);
 
     if (isset($_SESSION) && !empty($_SESSION)) {
 
-        if(isset($_SESSION['primeMember']) && !empty($_SESSION['primeMember']))
-        {
+        if (isset($_SESSION['primeMember']) && !empty($_SESSION['primeMember'])) {
             $combineActivities = array_merge($_SESSION['outdoorActivities'], $_SESSION['indoorActivities']);
+            //interests
+            $f3->set('combineActivities', $combineActivities);
         }
-        //var_dump($primeMember);
 
-        //info for all memebers
-        $fname = $primeMember->getFname();
-
-        // $f3->set('fname', $primeMember->getFname());
-        $f3->set('lname', $primeMember->getLname());
-        $f3->set('gender', $primeMember->getGender());
-        $f3->set('age', $primeMember->getAge());
-        $f3->set('phone', $primeMember->getPhone());
-        /*   $f3->set('email', $_SESSION['email']);
-           $f3->set('state', $_SESSION['state']);
-           $f3->set('biography', $_SESSION['biography']);
-           $f3->set('genderLook', $_SESSION['genderLook']);*/
-
-        //interests
-        $f3->set('combineActivities', $combineActivities);
-
+        $f3->set('fname', $_SESSION['fname']);
+        $f3->set('lname', $_SESSION['lname']);
+        $f3->set('gender', $_SESSION['gender']);
+        $f3->set('age', $_SESSION['age']);
+        $f3->set('phone', $_SESSION['phone']);
+        $f3->set('email', $_SESSION['email']);
+        $f3->set('state', $_SESSION['state']);
+        $f3->set('biography', $_SESSION['biography']);
+        $f3->set('seeking',$_SESSION['genderLook']);
     }
     echo Template::instance()->render("pages/summary.php");
 
