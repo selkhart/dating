@@ -148,8 +148,8 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
 
                         $primeMember = $_SESSION['primeMember'];
 
-//                        $primeMember->setIndoorActivities($chosenIndoorActivities);
-//                        $primeMember->setOutdoorActivities($chosenOutdoorActivities);
+                       $primeMember->setIndoorActivities($chosenIndoorActivities);
+                        $primeMember->setOutdoorActivities($chosenOutdoorActivities);
 
                         $_SESSION['indoorActivities'] = $chosenIndoorActivities;
                         $_SESSION['outdoorActivities'] = $chosenOutdoorActivities;
@@ -173,16 +173,14 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
 //define a default rote to render home.html
 $f3->route('GET|POST /pages/results', function ($f3) {
 
-    echo $_SESSION['member'];
     $primeMember = $_SESSION['primeMember'];
 
-    var_dump($primeMember);
 
     $f3->set('primeMember', $_SESSION['primeMember']);
 
     if (isset($_SESSION) && !empty($_SESSION)) {
 
-        if($primeMember != null)
+        if(isset($_SESSION['primeMember']) && !empty($_SESSION['primeMember']))
         {
             $combineActivities = array_merge($_SESSION['outdoorActivities'], $_SESSION['indoorActivities']);
         }

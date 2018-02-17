@@ -14,96 +14,73 @@ ini_set("display_errors", 1);
 <!doctype html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home Dating Page</title>
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
-          integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
-          crossorigin="anonymous">
-
-    <link rel="stylesheet" href="../../dating/styles/styles.css">
-    <link rel="stylesheet" href="../../dating/styles/formStyles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="../styles/formStyles.css">
+    <title>Summary</title>
 </head>
 <body>
-
-<!--Navbar-->
-<nav class="navbar navbar-light border border-left-0 border-right-0 border-top-0 mb-2">
-    <h1 class="navbar-brand mb-0">My Dating Website</h1>
+<!--NAV BAR-->
+<nav class="navbar navbar-default p-2 mb-1">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">My Dating Website</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <!--            FIX HOME LINK ****************************-->
+            <li class="active"><a href="../">Home</a></li>
+        </ul>
+    </div>
 </nav>
+<!-- CLOSE NAV BAR-->
+
 <div class="container">
-    <div class="card mx-auto" id="main">
-        <div class="card-block mx-4 my-3">
+    <!-- MAIN BODY -->
+    <div class="card mx-auto" id="mainBody">
+        <div class="card-block">
             <div class="row">
-                <h1>TOYGAN</h1>
-                <div class="col-md-6 justify-content-start ">
+                <div class="col-md-6 justify-content-start" >
+                    <!-- TABLE -->
+                    <ul class="list-group ml-2 mt-2 mb-2">
+                        <li class="list-group-item">Name: {{exists($fname) ? $fname : ''}}  {{exists($lname) ? $lname : ''}}</li>
+                        <li class="list-group-item">Gender: {{exists($gender) ? $gender : ''}} </li>
+                        <li class="list-group-item">Age: {{exists($age) ? $age : ''}} </li>
+                        <li class="list-group-item">Phone: {{exists($phone) ? $phone : ''}} </li>
+                        <li class="list-group-item">Email: {{exists($email) ? $email : ''}} </li>
+                        <li class="list-group-item">State: {{exists($state) ? $state : ''}} </li>
+                        <li class="list-group-item">Seeking: {{exists($seeking) ? $seeking : ''}} </li>
+                        <check if="{{@primeMember == 'primeMember'}}">
+                                <li class="list-group-item">
+                                    Interests:
+                                    <repeat group="{{ @combineActivities }}" value="{{ @value }}">
+                                        {{ @value }}
+                                    </repeat>
+                                    <repeat group="{{ @outdoorList }}" value="{{ @value }}">
+                                        {{ @value }}
+                                    </repeat>
+                                </li>
 
-                    <table class="table table-bordered">
-                        <tbody>
-                        <tr>
-                            <td>Name: {{exists($fname) ? $fname : ''}}  {{exists($lname) ? $lname : ''}}</td>
-                        </tr>
-                        <tr>
-                            <td>Gender: {{exists($gender) ? $gender : ''}}</td>
-                        </tr>
-                        <tr>
-                            <td>Age: {{exists($age) ? $age : ''}}</td>
-                        </tr>
-                        <tr>
-                            <td>Phone: {{exists($phone) ? $phone : ''}}</td>
-                        </tr>
-                        <tr>
-                            <td>Email: {{exists($email) ? $email : ''}}</td>
-                        </tr>
-                        <tr>
-                            <td>State: {{exists($state) ? $state : ''}}</td>
-                        </tr>
-                        <tr>
-                            <td>Seeking: {{exists($genderLook) ? $genderLook : ''}}</td>
-                        </tr>
-                        <tr>
-                            <check if="{{@primeMember == 'primeMember'}}">
-                                <true>
-                                    <td>Interests:
-                                        <repeat group="{{@combineActivities}}"
-                                                value="{{@value}}">{{$value}}
-                                        </repeat>
-                                    </td>
-                                </true>
-                            </check>
+                        </check>
 
-                        </tr>
-                        </tbody>
-                    </table>
+                    </ul>
                 </div>
                 <div class="col-md-6">
-
-                    <img src="../images/dateBio.jpeg" alt="account image" id="userImage">
-
+                    <!--CHANGED ID FROM accountImg-->
+                    <img class="mx-auto rounded" src="../images/profilePic.png" alt="generic picture" id="profilePic">
+                    <!-- BIOGRAPHY -->
                     <div class="container justify-content-center text-center">
                         <h3>Biography</h3>
-                        <p>
-                            {{exists($biography) ? $biography : ''}}
-                        </p>
+                        <p>{{ @biography }}</p>
                     </div>
                 </div>
             </div>
             <div class="d-flex mx-auto justify-content-center">
-                <button class="btn btn-primary">Contact Me!</button>
+                <button class="btn btn-primary" id="contactMeButton">Contact Me!</button>
             </div>
         </div>
     </div>
 </div>
-
-<!--Bootstrap cdn's-->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"
-        integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
-        crossorigin="anonymous"></script>
 </body>
 </html>

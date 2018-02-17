@@ -38,17 +38,14 @@
                 <div class="col-md-6 justify-content-start" >
                     <!-- TABLE -->
                     <ul class="list-group ml-2 mt-2 mb-2">
-                        <li class="list-group-item">Name: <?= ($fname) ?> <?= ($lname) ?></li>
-                        <li class="list-group-item">Gender: <?= ($gender) ?></li>
-                        <li class="list-group-item">Age: <?= ($age) ?></li>
-                        <li class="list-group-item">Phone: <?= ($phone) ?></li>
-                        <li class="list-group-item">Email: <?= ($email) ?></li>
-                        <li class="list-group-item">State: <?= ($state) ?></li>
-                        <li class="list-group-item">Seeking: <?= ($genderLook) ?></li>
-                        <h1>asdsad</h1>
-
+                        <li class="list-group-item">Name: <?= (exists($fname) ? $fname : '') ?>  <?= (exists($lname) ? $lname : '') ?></li>
+                        <li class="list-group-item">Gender: <?= (exists($gender) ? $gender : '') ?> </li>
+                        <li class="list-group-item">Age: <?= (exists($age) ? $age : '') ?> </li>
+                        <li class="list-group-item">Phone: <?= (exists($phone) ? $phone : '') ?> </li>
+                        <li class="list-group-item">Email: <?= (exists($email) ? $email : '') ?> </li>
+                        <li class="list-group-item">State: <?= (exists($state) ? $state : '') ?> </li>
+                        <li class="list-group-item">Seeking: <?= (exists($seeking) ? $seeking : '') ?> </li>
                         <?php if ($primeMember == 'primeMember'): ?>
-
                                 <li class="list-group-item">
                                     Interests:
                                     <?php foreach (($combineActivities?:[]) as $value): ?>
@@ -60,7 +57,6 @@
 " ?>
                                     <?php endforeach; ?>
                                 </li>
-                            </>
 
                         <?php endif; ?>
 
