@@ -64,7 +64,6 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
                     $f3->set('errors', $errors);
                     // $f3->set('success', $success);
 
-
                     if (sizeof($errors) > 2) {
                         $f3->set('fname', $fname);
                         $f3->set('lname', $lname);
@@ -111,6 +110,10 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
 
                         echo Template::instance()->render("pages/profile.html");
                     } else {
+
+                       // $member = $_SESSION['memberUser'];
+                       // $member->setEmail($email);
+
                         $_SESSION['email'] = $email;
                         $_SESSION['state'] = $state;
                         $_SESSION['genderLook'] = $genderLook;
@@ -169,7 +172,7 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
             $f3->error(404);
     }
 });
-function exists(&$variable)
+function exists($variable)
 {
     return isset($variable) && !empty($variable);
 }
@@ -179,14 +182,14 @@ $f3->route('GET|POST /pages/results', function ($f3) {
 
     $primeMember = $_SESSION['primeMember'];
 
-    $f3->set('primeMember', $primeMember);
-
     if (isset($_SESSION) && !empty($_SESSION)) {
 
         if (isset($_SESSION['primeMember']) && !empty($_SESSION['primeMember'])) {
             $combineActivities = array_merge($_SESSION['outdoorActivities'], $_SESSION['indoorActivities']);
             //interests
             $f3->set('combineActivities', $combineActivities);
+
+            $f3->set('primeMember', 'primeMember');
         }
 
         $f3->set('fname', $_SESSION['fname']);
