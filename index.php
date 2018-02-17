@@ -169,11 +169,15 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
             $f3->error(404);
     }
 });
-
+function exists(&$variable)
+{
+    return isset($variable) && !empty($variable);
+}
 //define a default rote to render home.html
 $f3->route('GET|POST /pages/results', function ($f3) {
 
     $primeMember = $_SESSION['primeMember'];
+
 
     $f3->set('primeMember', 'primeMember');
 
