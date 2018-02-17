@@ -35,18 +35,18 @@
                             <div class="form-group">
 
                                 <label for="email" class="font-weight-bold">Email</label>
-                                <check if="{{@errorsProfile['email']}}">
-                                    <p class="text-danger">{{@errorsProfile['email']}}</p>
-                                </check>
+                                <?php if ($errorsProfile['email']): ?>
+                                    <p class="text-danger"><?= ($errorsProfile['email']) ?></p>
+                                <?php endif; ?>
                                 <input type="email" class="form-control" name="email"
-                                       id="email" value="{{@email}}" aria-describedby="email"
+                                       id="email" value="<?= ($email) ?>" aria-describedby="email"
                                        placeholder="Enter Email">
                             </div>
                             <div class="form-group">
                                 <label for="state" class="font-weight-bold">State</label>
-                                <check if="{{@errorsProfile['state']}}">
-                                    <p class="text-danger">{{@errorsProfile['state']}}</p>
-                                </check>
+                                <?php if ($errorsProfile['state']): ?>
+                                    <p class="text-danger"><?= ($errorsProfile['state']) ?></p>
+                                <?php endif; ?>
 
                                 <select class="form-control mb-0"
                                         name="state" id="state">
@@ -56,15 +56,15 @@
                             <div class="form-group">
                                 <label for="genderLook"
                                        class="form-label font-weight-bold mb-0">Seeking</label><br>
-                                <check if="{{@errorsProfile['genderLook'] }}">
-                                    <p class="text-danger">{{@errorsProfile['genderLook']}}</p>
-                                </check>
+                                <?php if ($errorsProfile['genderLook']): ?>
+                                    <p class="text-danger"><?= ($errorsProfile['genderLook']) ?></p>
+                                <?php endif; ?>
                                 <!--Male-->
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label">
                                         <input class="form-check-input mr-2" type="radio"
                                                name="genderLook" id="genderLook" value="male"
-                                        <check if="{{@genderLook == 'male'}}">checked</check>
+                                        <?php if ($genderLook == 'male'): ?>checked<?php endif; ?>
                                         >Male
                                     </label>
                                 </div>
@@ -74,7 +74,7 @@
                                     <label class="form-check-label">
                                         <input class="form-check-input mr-2" type="radio"
                                                name="genderLook" value="female"
-                                        <check if="{{@genderLook == 'female'}}">checked</check>
+                                        <?php if ($genderLook == 'female'): ?>checked<?php endif; ?>
                                         > Female
                                     </label>
                                 </div>
@@ -85,12 +85,12 @@
                             <div class="form-group">
                                 <label for="biography"
                                        class="font-weight-bold">Biography</label>
-                                <check if="{{@errorsProfile['biography']}}">
-                                    <p class="text-danger">{{@errorsProfile['biography']}}</p>
-                                </check>
+                                <?php if ($errorsProfile['biography']): ?>
+                                    <p class="text-danger"><?= ($errorsProfile['biography']) ?></p>
+                                <?php endif; ?>
                                 <textarea class="form-control"
                                           name="biography"
-                                          id="biography" rows="7">{{@biography}}</textarea>
+                                          id="biography" rows="7"><?= ($biography) ?></textarea>
                             </div>
                             <div class="d-flex align-items-end justify-content-end w-100">
                                 <button class="btn btn-primary" name="submit" id="submit">Next &gt;

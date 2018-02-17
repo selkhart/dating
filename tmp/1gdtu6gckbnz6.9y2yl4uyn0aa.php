@@ -39,46 +39,46 @@
                     <div class="col-12">
                         <label for="fname" class="form-label font-weight-bold mb-1">First
                             Name</label>
-                        <check if="{{@errors['fname']}}">
-                            <p class="text-danger">{{ @errors['fname'] }}</p>
-                        </check>
+                        <?php if ($errors['fname']): ?>
+                            <p class="text-danger"><?= ($errors['fname']) ?></p>
+                        <?php endif; ?>
                     </div>
 
                     <!--Most inputs except phone number-->
                     <div class="col-8">
                         <!--First Name-->
-                        <input class="form-control mb-2" type="text" value="{{@fname}}" name="fname"
+                        <input class="form-control mb-2" type="text" value="<?= ($fname) ?>" name="fname"
                                id="fname">
 
                         <!--Last Nae-->
                         <label for="lname" class="form-label font-weight-bold mb-1">Last
                             Name</label>
 
-                        <check if="{{@errors['lname']}}">
-                            <p class="text-danger">{{ @errors['lname'] }}</p>
-                        </check>
+                        <?php if ($errors['lname']): ?>
+                            <p class="text-danger"><?= ($errors['lname']) ?></p>
+                        <?php endif; ?>
 
-                        <input class="form-control mb-2" type="text" value="{{@lname}}" name="lname"
+                        <input class="form-control mb-2" type="text" value="<?= ($lname) ?>" name="lname"
                                id="lname">
 
                         <!--Age-->
                         <label for="age" class="form-label font-weight-bold mb-1">Age</label>
-                        <check if="{{@errors['age']}}">
-                            <p class="text-danger my-1">{{@errors['age']}}</p>
-                        </check>
-                        <input class="form-control mb-2" type="number" value="{{@age}}" name="age" id="age"
+                        <?php if ($errors['age']): ?>
+                            <p class="text-danger my-1"><?= ($errors['age']) ?></p>
+                        <?php endif; ?>
+                        <input class="form-control mb-2" type="number" value="<?= ($age) ?>" name="age" id="age"
                                max="101">
 
                         <label for="gender" class="form-label font-weight-bold mb-0">Gender</label><br>
-                        <check if="{{@errors['gender'] }}">
-                            <p class="text-danger">{{@errors['gender']}}</p>
-                        </check>
+                        <?php if ($errors['gender']): ?>
+                            <p class="text-danger"><?= ($errors['gender']) ?></p>
+                        <?php endif; ?>
                         <!--Male-->
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
                                 <input class="form-check-input mr-2" type="radio"
                                        name="gender" id="gender" value="male"
-                                <check if="{{@gender == 'male'}}">checked</check>
+                                <?php if ($gender == 'male'): ?>checked<?php endif; ?>
                                 >Male
                             </label>
                         </div>
@@ -88,7 +88,7 @@
                             <label class="form-check-label">
                                 <input class="form-check-input mr-2" type="radio"
                                        name="gender" value="female"
-                                <check if="{{@gender == 'female'}}">checked</check>
+                                <?php if ($gender == 'female'): ?>checked<?php endif; ?>
                                 > Female
                             </label>
                         </div>
@@ -108,10 +108,10 @@
                     <div class="col-8">
                         <label for="phone" class="form-label font-weight-bold mb-1">Phone
                             Number</label>
-                        <check if="{{@errors['phone']}}">
-                            <p class="text-danger">{{@errors['phone']}}</p>
-                        </check>
-                        <input class="form-control" type="text" value="{{@phone}}" id="phone" name="phone"
+                        <?php if ($errors['phone']): ?>
+                            <p class="text-danger"><?= ($errors['phone']) ?></p>
+                        <?php endif; ?>
+                        <input class="form-control" type="text" value="<?= ($phone) ?>" id="phone" name="phone"
                                pattern="[0-9]{10}">
                     </div> <!--div class="col-4"-->
 

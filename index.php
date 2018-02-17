@@ -4,96 +4,212 @@
 //17 January 2018
 //index.php
 //start a session
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 
-//require the autoload file
+// fat free
 require_once('vendor/autoload.php');
+
+//start session
 session_start();
 
-//create an instance of the Base Class
+
+//create an instance of the base class
 $f3 = Base::instance();
 
-//set debug (error reporting) level
-$f3->set('DEBUG',3);
-
-//set default route to home.html
-$f3->route('GET|POST /', function() {
-    echo Template::instance()->render('pages/home.html');
+//define a default rote to render home.html
+$f3->route('GET /', function () {
+    $view = new View; //could be template too, ask
+    echo $view->render('pages/home.html');
 });
 
-//set route to personal information page
-$f3->route('GET|POST /myInfo', function($f3) {
-    $_SESSION['inputFirstName'] = $_POST['inputFirstName'];
-    $_SESSION['inputLastName'] = $_POST['inputLastName'];
-    $_SESSION['inputAge'] = $_POST['inputAge'];
-    $_SESSION['gender'] = $_POST['gender'];
-    $_SESSION['inputPhone'] = $_POST['inputPhone'];
+//activities arrays
+$f3->set("outdoorActivities", array("hiking", "biking", "swimming",
+    "collecting",
+    "walking", "climbing"));
+$f3->set("indoorActivities", array("tv", "movies", "cooking", "board games", "puzzles", "reading",
+    "playing cards", "video games"));
 
-    if(isset($_POST['submit']))
-    {
-       $inputFirstName = $_POST['inputFirstName'];
-       $inputLastName = $_POST['inputLastName'];
-       $inputAge = $_POST['inputAge'];
+//Define a default route
+$f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
+
+    switch ($params['pageName']) {
+        case 'personal' :
+
+            //ipost method request
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (isset($_POST['submit'])) {
+
+                    $fname = $_POST['fname'];
+                    $lname = $_POST['lname'];
+                    $age = $_POST['age'];
+                    $gender = $_POST['gender'];
+                    $phone = $_POST['phone'];
+
+                    $_SESSION['primeMember'] = $_POST['primeMember'];
+
+                    //check for prime membership when submits
+                    if (isset($_POST['primeMember']) && !empty($_POST['primeMember'])) {
+                        $primeMember = new PremiumMember($fname, $lname, $age, $gender, $phone, "", "");
+                        $_SESSION['primeMember'] = $primeMember;
+                    } else {
+                        //create a not prime member account
+                        $member = new Member($fname, $lname, $age, $gender, $phone);
+                        $_SESSION['memberUser'] = $member;
+                    }
+
+                    include('model/validation.php');
+
+                    $f3->set('member', $_SESSION['member']);
+                    $f3->set('errors', $errors);
+                    // $f3->set('success', $success);
 
 
-        include "model/validation.php";
+                    if (sizeof($errors) > 2) {
+                        $f3->set('fname', $fname);
+                        $f3->set('lname', $lname);
+                        $f3->set('age', $age);
+                        $f3->set('gender', $gender);
+                        $f3->set('phone', $phone);
 
-        $f3->set('errors',$errors);
+                        echo Template::instance()->render('pages/personal_information.html');
 
-        echo print_r($errors);
-        echo print_r($_POST);
+                    } else {
+                        $_SESSION['fname'] = $_POST['fname'];
+                        $_SESSION['lname'] = $lname;
+                        $_SESSION['age'] = $age;
+                        $_SESSION['gender'] = $gender;
+                        $_SESSION['phone'] = $phone;
 
-        if($errors)
+                        $f3->reroute('./profile');
+                    }
+
+                }
+
+            } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                echo Template::instance()->render("pages/personal_information.html");
+            }
+            break;
+
+        case 'profile':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (isset($_POST['submit'])) {
+                    $email = $_POST['email'];
+                    $state = $_POST['state'];
+                    $genderLook = $_POST['genderLook'];
+                    $biography = $_POST['biography'];
+
+                    include('model/validateProfile.php');
+
+                    $f3->set('errorsProfile', $errorsProfile);
+
+                    if (sizeof($errorsProfile) > 0) {
+                        $f3->set('email', $email);
+                        $f3->set('state', $state);
+                        $f3->set('genderLook', $genderLook);
+                        $f3->set('biography', $biography);
+
+                        echo Template::instance()->render("pages/profile.html");
+                    } else {
+                        $_SESSION['email'] = $email;
+                        $_SESSION['state'] = $state;
+                        $_SESSION['genderLook'] = $genderLook;
+                        $_SESSION['biography'] = $biography;
+
+                        if (isset($_SESSION['primeMember']) && !empty($_SESSION['primeMember'])) {
+                            $f3->reroute('./interests');
+                        } else {
+                            $f3->reroute('./results');
+                        }
+                    }
+                }
+
+            } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                echo Template::instance()->render('pages/profile.html');
+            }
+            break;
+        case 'interests':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (isset($_POST['submit'])) {
+                    $chosenOutdoorActivities = $_POST['outdoorActivities'];
+                    $chosenIndoorActivities = $_POST['indoorActivities'];
+
+                    include('model/validation.php');
+
+                    $f3->set('errors', $errors);
+                    $f3->set('success', $success);
+
+                    if (isset($errors['indoorActivities']) || isset($errors['outdoorActivities'])) {
+                        $f3->set('chosenIndoorActivities', $chosenIndoorActivities);
+                        $f3->set('chosenOutdoorActivities', $chosenOutdoorActivities);
+
+                        echo Template::instance()->render('pages/interests.html');
+                    } else {
+
+                        $primeMember = $_SESSION['primeMember'];
+
+//                        $primeMember->setIndoorActivities($chosenIndoorActivities);
+//                        $primeMember->setOutdoorActivities($chosenOutdoorActivities);
+
+                        $_SESSION['indoorActivities'] = $chosenIndoorActivities;
+                        $_SESSION['outdoorActivities'] = $chosenOutdoorActivities;
+
+                        $_SESSION['primeMember'] = $primeMember;
+
+
+                        $f3->reroute('./results');
+                    }
+                }
+            } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                echo Template::instance()->render('pages/interests.html');
+            }
+            break;
+
+        default:
+            $f3->error(404);
+    }
+});
+
+//define a default rote to render home.html
+$f3->route('GET|POST /pages/results', function ($f3) {
+
+    echo $_SESSION['member'];
+    $primeMember = $_SESSION['primeMember'];
+
+    var_dump($primeMember);
+
+    $f3->set('primeMember', $_SESSION['primeMember']);
+
+    if (isset($_SESSION) && !empty($_SESSION)) {
+
+        if($primeMember != null)
         {
-            $f3->set('inputFirstName',$inputFirstName);
-            $f3->set('inputLastName',$inputLastName);
-            $f3->set('inputAge',$inputAge);
-
-            echo Template::instance()->render('pages/personal_information.html');
-
+            $combineActivities = array_merge($_SESSION['outdoorActivities'], $_SESSION['indoorActivities']);
         }
-        echo "TOYGAN";
+        //var_dump($primeMember);
+
+        //info for all memebers
+
+        $f3->set('fname', $primeMember->getFname());
+        $f3->set('lname', $primeMember->getLname());
+        $f3->set('gender', $primeMember->getGender());
+        $f3->set('age', $primeMember->getAge());
+        $f3->set('phone', $primeMember->getPhone());
+        $f3->set('email', $_SESSION['email']);
+        $f3->set('state', $_SESSION['state']);
+        $f3->set('biography', $_SESSION['biography']);
+        $f3->set('genderLook', $_SESSION['genderLook']);
+
+        //interests
+        $f3->set('combineActivities', $combineActivities);
 
     }
-   echo Template::instance()->render('pages/personal_information.html');
-});
-
-//set route to profile page
-$f3->route('GET|POST /profile', function() {
-    $_SESSION['inputEmail'] = $_POST['inputEmail'];
-    $_SESSION['inputState'] = $_POST['inputState'];
-    $_SESSION['inputSeeking'] = $_POST['inputSeeking'];
-    $_SESSION['inputBiography'] = $_POST['inputBiography'];
-
-    echo Template::instance()->render('pages/profile.html');
-});
-
-//set route to interests page
-$f3->route('GET|POST /interests', function() {
-    echo Template::instance()->render('pages/interests.html');
-});
-
-//set route to summary
-$f3->route('GET|POST /summary', function($f3) {
-
-    $_SESSION['indoors'] = $_POST['indoors'];
-    $_SESSION['outdoors'] = $_POST['outdoors'];
-
-    $f3->set('firstName', $_SESSION['inputFirstName']);
-    $f3->set('lastName', $_SESSION['inputLastName']);
-    $f3->set('age', $_SESSION['inputAge']);
-    $f3->set('gender', $_SESSION['gender']);
-    $f3->set('phone', $_SESSION['inputPhone']);
-    $f3->set('email', $_SESSION['inputEmail']);
-    $f3->set('state', $_SESSION['inputState']);
-    $f3->set('seeking', $_SESSION['inputSeeking']);
-    $f3->set('bio', $_SESSION['inputBiography']);
-    $f3->set('indoors', $_SESSION['indoors']);
-    $f3->set('outdoors', $_SESSION['outdoors']);
-    $template = new Template();
-    echo $template->render('pages/summary.html');
-
+    echo Template::instance()->render("pages/summary.php");
 
 });
+
+///fatfree enable error reporting
+$f3->set('DEBUG', 3); // highest is 3 lowest 0;
 
 //run fat free
 $f3->run();
