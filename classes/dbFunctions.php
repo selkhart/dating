@@ -11,7 +11,7 @@ require("/home/selkhart/config.php");
 class dbFunctions
 {
 
-    function connect()
+    static function connect()
     {
         try {
             //Instantiate a database object
@@ -25,7 +25,7 @@ class dbFunctions
         }
     }
 
-    function getMembers()
+    static function getMembers()
     {
         global $dbh;
         //1. Define the query
@@ -41,11 +41,11 @@ class dbFunctions
         return $result;
     }
 
-    function getPrimeMembers()
+    static function getPrimeMembers()
     {
         global $dbh;
         //1. Define the query
-        $sql = "SELECT * FROM Members ORDER BY lname";
+        $sql = "SELECT * FROM  ORDER BY lname";
         //2. Prepare the statement
         $statement = $dbh->prepare($sql);
         //3. Bind parameters
@@ -58,15 +58,12 @@ class dbFunctions
     }
 
 
-    function addAccount($fname, $lname, $gender, $seeking, $email, $age, $phone, $interests, $bio, $premium,
-                        $state,
-                        $image)
+    static function addAccount($fname, $lname, $gender, $seeking, $email, $age, $phone, $interests, $bio, $premium,
+                        $state, $image)
     {
-        //
-        global $conn;
-
+        $conn = dbFunctions::connect();
         //define sql
-        $sql = "insert into datingMembers(fname,lname,gender,seeking,email,age,phone,interests,bio,premium,state,
+        $sql = "insert into Members(fname,lname,gender,seeking,email,age,phone,interests,bio,premium,state,
 image) values(:fname,:lname,:gender,:seeking,:email,:age,:phone,:interests,:bio,:premium,:state,
 :image)";
 

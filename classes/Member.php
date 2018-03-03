@@ -9,16 +9,18 @@
 
 class Member
 {
-    protected $fname;
-    protected $lname;
-    protected $age;
-    protected $gender;
-    protected $phone;
-    protected $email;
-    protected $state;
-    protected $seeking;
-    protected $bio;
-    protected $premium;
+    protected $fname = "";
+    protected $lname= "";
+    protected $age= "";
+    protected $gender= "";
+    protected $phone= "";
+    protected $email= "";
+    protected $state= "";
+    protected $seeking= "";
+    protected $bio= "";
+    protected $premium= "";
+    protected $interests= "";
+    protected $image= "";
 
     /**
      * @return mixed
@@ -43,6 +45,12 @@ class Member
         $this->gender = $gender;
         $this->phone = $phone;
         $this->premium = false;
+    }
+
+    public function registerMember()
+    {
+        dbFunctions::addAccount($this->fname, $this->lname, $this->gender, $this->seeking, $this->email, $this->age, $this->phone,
+            $this->interests, $this->bio, $this->premium, $this->state, $this->image);
     }
     /**
      * @return the first name of the user

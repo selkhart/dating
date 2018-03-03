@@ -13,8 +13,8 @@ require_once('vendor/autoload.php');
 //start session
 session_start();
 
-$dataBase = new dbFunctions();
-$dbh = $dataBase->connect();
+//$dataBase = new dbFunctions();
+//$dbh = $dataBase->connect();
 
 //create an instance of the base class
 $f3 = Base::instance();
@@ -57,7 +57,7 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
 
                     //check for prime membership when submits
                     if (isset($_POST['primeMember']) && !empty($_POST['primeMember'])) {
-                        $primeMember = new PremiumMember($fname, $lname, $age, $gender, $phone);
+                        $primeMember = new PremiumMember($fname, $lname, $age, $gender, $phone, "", "");
                         $_SESSION['primeMember'] = $primeMember;
                     } else {
                         //create a not prime member account
@@ -166,10 +166,8 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
                     } else {
 
                         $primeMember = $_SESSION['primeMember'];
-                        $primeMember->setCominedActivities(array_merge($chosenIndoorActivities, $chosenOutdoorActivities));
 
-                        $primeMember->setIndoorActivities(implode(", " , $chosenIndoorActivities));
-                        $primeMember->setOutdoorActivities(implode(", ", $chosenOutdoorActivities));
+                        $primeMember->setCominedActivities(implode(", ", array_merge($chosenIndoorActivities, $chosenOutdoorActivities)));
 
                         $_SESSION['indoorActivities'] = $chosenIndoorActivities;
                         $_SESSION['outdoorActivities'] = $chosenOutdoorActivities;
@@ -199,16 +197,22 @@ function exists($variable)
 //define a default rote to render results.html
 $f3->route('GET|POST /pages/results', function ($f3) {
 
-    $primeMember = $_SESSION['primeMember'];
 
-    if (isset($_SESSION) && !empty($_SESSION)) {
 
         if (isset($_SESSION['primeMember']) && !empty($_SESSION['primeMember'])) {
             $combineActivities = array_merge($_SESSION['outdoorActivities'], $_SESSION['indoorActivities']);
+            $primeMember = $_SESSION['primeMember'];
+
             //interests
             $f3->set('combineActivities', $combineActivities);
-
             $f3->set('primeMember', 'primeMember');
+        }
+        else{
+            $member = $_SESSION['memberUser'];
+            $_SESSION['memberUser']->registerMember();
+
+            $primeMember = $_SESSION['primeMember'];
+            $_SESSION['primeMember']->registerMember();
         }
 
         $f3->set('fname', $_SESSION['fname']);
@@ -221,7 +225,7 @@ $f3->route('GET|POST /pages/results', function ($f3) {
         $f3->set('state', $_SESSION['state']);
         $f3->set('biography', $_SESSION['biography']);
         $f3->set('seeking',$_SESSION['genderLook']);
-    }
+
     echo Template::instance()->render("pages/summary.php");
 
 });
@@ -233,7 +237,6 @@ $f3->route('GET|POST /pages/admin',function ($f3)
    $members = $dataBase->getMembers();
 
     $f3->set('members',$members);
-    $f3->set('primeMember',$primeMember);
 
     echo Template::instance()->render('pages/admin.html');
 });
