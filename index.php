@@ -124,11 +124,11 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
                         $_SESSION['biography'] = $biography;
 
                         if (isset($_SESSION['primeMember']) && !empty($_SESSION['primeMember'])) {
-                            $primeMember = $_SESSION['memberUser'];
+                            $primeMember = $_SESSION['primeMember'];
                             $primeMember->setEmail($email);
                             $primeMember->setState($state);
                             $primeMember->setSeeking($seeking);
-                            $primeMember->setBiography($biography);
+                            $primeMember->setBio($biography);
 
                             $f3->reroute('./interests');
                         } else {
@@ -136,7 +136,7 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
                             $member->setEmail($email);
                             $member->setState($state);
                             $member->setSeeking($seeking);
-                            $member->setBiography($biography);
+                            $member->setBio($biography);
 
                             $f3->reroute('./results');
                         }
@@ -167,8 +167,8 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
 
                         $primeMember = $_SESSION['primeMember'];
 
-                        $primeMember->setIndoorActivities($chosenIndoorActivities);
-                        $primeMember->setOutdoorActivities($chosenOutdoorActivities);
+                        $primeMember->setIndoorActivities(implode(", " , $chosenIndoorActivities));
+                        $primeMember->setOutdoorActivities(implode(", ", $chosenOutdoorActivities));
 
                         $_SESSION['indoorActivities'] = $chosenIndoorActivities;
                         $_SESSION['outdoorActivities'] = $chosenOutdoorActivities;
