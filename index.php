@@ -166,6 +166,7 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
                     } else {
 
                         $primeMember = $_SESSION['primeMember'];
+                        $primeMember->setCominedActivities(array_merge($chosenIndoorActivities, $chosenOutdoorActivities));
 
                         $primeMember->setIndoorActivities(implode(", " , $chosenIndoorActivities));
                         $primeMember->setOutdoorActivities(implode(", ", $chosenOutdoorActivities));
