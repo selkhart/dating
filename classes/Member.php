@@ -18,6 +18,15 @@ class Member
     protected $state;
     protected $seeking;
     protected $bio;
+    protected $premium;
+
+    /**
+     * @return mixed
+     */
+    public function getPremium()
+    {
+        return $this->premium;
+    }
     /**
      * Member constructor.
      * @param $fname profile user's first name
@@ -33,6 +42,7 @@ class Member
         $this->age = $age;
         $this->gender = $gender;
         $this->phone = $phone;
+        $this->premium = false;
     }
     /**
      * @return the first name of the user

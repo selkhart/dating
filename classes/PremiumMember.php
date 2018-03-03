@@ -15,6 +15,7 @@ class PremiumMember extends Member
         parent::__construct($fname, $lname, $age, $gender, $phone);
         $this->_indoorActivities = $indoorActivities;
         $this->_outdoorActivities = $outdoorActivities;
+        $this-> premium = true;
     }
 
     //******************************************************************************
