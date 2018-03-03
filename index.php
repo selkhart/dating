@@ -14,7 +14,6 @@ require_once('vendor/autoload.php');
 session_start();
 
 $dataBase = new dbFunctions();
-
 $dbh = $dataBase->connect();
 
 //create an instance of the base class
@@ -58,7 +57,7 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
 
                     //check for prime membership when submits
                     if (isset($_POST['primeMember']) && !empty($_POST['primeMember'])) {
-                        $primeMember = new PremiumMember($fname, $lname, $age, $gender, $phone, "", "");
+                        $primeMember = new PremiumMember($fname, $lname, $age, $gender, $phone);
                         $_SESSION['primeMember'] = $primeMember;
                     } else {
                         //create a not prime member account
@@ -88,10 +87,6 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
                         $_SESSION['gender'] = $gender;
                         $_SESSION['phone'] = $phone;
 
-
-
-
-
                         $f3->reroute('./profile');
                     }
 
@@ -107,7 +102,7 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
                 if (isset($_POST['submit'])) {
                     $email = $_POST['email'];
                     $state = $_POST['state'];
-                    $genderLook = $_POST['genderLook'];
+                    $seeking = $_POST['genderLook'];
                     $biography = $_POST['biography'];
 
                     include('model/validateProfile.php');
@@ -117,23 +112,32 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
                     if (sizeof($errorsProfile) > 0) {
                         $f3->set('email', $email);
                         $f3->set('state', $state);
-                        $f3->set('genderLook', $genderLook);
+                        $f3->set('seeking', $seeking);
                         $f3->set('biography', $biography);
 
                         echo Template::instance()->render("pages/profile.html");
                     } else {
 
-                       // $member = $_SESSION['memberUser'];
-                       // $member->setEmail($email);
-
                         $_SESSION['email'] = $email;
                         $_SESSION['state'] = $state;
-                        $_SESSION['genderLook'] = $genderLook;
+                        $_SESSION['seeking'] = $seeking;
                         $_SESSION['biography'] = $biography;
 
                         if (isset($_SESSION['primeMember']) && !empty($_SESSION['primeMember'])) {
+                            $primeMember = $_SESSION['memberUser'];
+                            $primeMember->setEmail($email);
+                            $primeMember->setState($state);
+                            $primeMember->setSeeking($seeking);
+                            $primeMember->setBiography($biography);
+
                             $f3->reroute('./interests');
                         } else {
+                            $member = $_SESSION['memberUser'];
+                            $member->setEmail($email);
+                            $member->setState($state);
+                            $member->setSeeking($seeking);
+                            $member->setBiography($biography);
+
                             $f3->reroute('./results');
                         }
                     }
@@ -213,21 +217,13 @@ $f3->route('GET|POST /pages/results', function ($f3) {
         $f3->set('phone', $_SESSION['phone']);
         $f3->set('email', $_SESSION['email']);
         $f3->set('state', $_SESSION['state']);
+        $f3->set('state', $_SESSION['state']);
         $f3->set('biography', $_SESSION['biography']);
         $f3->set('seeking',$_SESSION['genderLook']);
     }
     echo Template::instance()->render("pages/summary.php");
 
 });
-//
-//$f3->route('GET|POST /pages/admin', function ($f3, $params)
-//{
-//    global $DBobject;
-//
-//    $members = $DBobject->displayMembers();
-//    $f3->set('members', $members);
-//    echo Template::instance()->render('pages/admin.html');
-//});
 
 $f3->route('GET|POST /pages/admin',function ($f3)
 {
@@ -236,6 +232,7 @@ $f3->route('GET|POST /pages/admin',function ($f3)
    $members = $dataBase->getMembers();
 
     $f3->set('members',$members);
+    $f3->set('primeMember',$primeMember);
 
     echo Template::instance()->render('pages/admin.html');
 });
