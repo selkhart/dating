@@ -8,7 +8,9 @@
 
 class PremiumMember extends Member
 {
-    private $_indoorActivities, $_outdoorActivities;
+    private $_indoorActivities, $_outdoorActivities, $_combinedActivities;
+
+
 
     public function __construct($fname, $lname, $age, $gender, $phone, $indoorActivities, $outdoorActivities)
     {
@@ -19,6 +21,23 @@ class PremiumMember extends Member
     }
 
     //******************************************************************************
+
+    /**
+     * @return mixed
+     */
+    public function getCombinedActivities()
+    {
+        return $this->_combinedActivities;
+    }
+
+    /**
+     * @param mixed $combinedActivities
+     */
+    public function setCombinedActivities($combinedActivities)
+    {
+        $this->_combinedActivities = $combinedActivities;
+    }
+
     /**
      * @return mixed
      */
