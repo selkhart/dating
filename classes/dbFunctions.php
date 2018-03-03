@@ -41,6 +41,22 @@ class dbFunctions
         return $result;
     }
 
+    function getPrimeMembers()
+    {
+        global $dbh;
+        //1. Define the query
+        $sql = "SELECT * FROM Members ORDER BY lname";
+        //2. Prepare the statement
+        $statement = $dbh->prepare($sql);
+        //3. Bind parameters
+        //4. Execute the query
+        $statement->execute();
+        //5. Get the results
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //print_r($result);
+        return $result;
+    }
+
 
     function addAccount($fname, $lname, $gender, $seeking, $email, $age, $phone, $interests, $bio, $premium,
                         $state,
