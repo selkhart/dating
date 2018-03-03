@@ -13,9 +13,17 @@ require_once('vendor/autoload.php');
 //start session
 session_start();
 
+$dataBase = new dbFunctions();
+
+$dbh = $dataBase->connect();
 
 //create an instance of the base class
 $f3 = Base::instance();
+
+
+///fatfree enable error reporting
+$f3->set('DEBUG', 3); // highest is 3 lowest 0;
+
 
 //define a default rote to render home.html
 $f3->route('GET /', function () {
@@ -79,6 +87,10 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
                         $_SESSION['age'] = $age;
                         $_SESSION['gender'] = $gender;
                         $_SESSION['phone'] = $phone;
+
+
+
+
 
                         $f3->reroute('./profile');
                     }
@@ -172,12 +184,14 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
             $f3->error(404);
     }
 });
+
+
 function exists($variable)
 {
     return isset($variable) && !empty($variable);
 }
 
-//define a default rote to render home.html
+//define a default rote to render results.html
 $f3->route('GET|POST /pages/results', function ($f3) {
 
     $primeMember = $_SESSION['primeMember'];
@@ -205,9 +219,26 @@ $f3->route('GET|POST /pages/results', function ($f3) {
     echo Template::instance()->render("pages/summary.php");
 
 });
+//
+//$f3->route('GET|POST /pages/admin', function ($f3, $params)
+//{
+//    global $DBobject;
+//
+//    $members = $DBobject->displayMembers();
+//    $f3->set('members', $members);
+//    echo Template::instance()->render('pages/admin.html');
+//});
 
-///fatfree enable error reporting
-$f3->set('DEBUG', 3); // highest is 3 lowest 0;
+$f3->route('GET|POST /pages/admin',function ($f3)
+{
+    global $dataBase;
+
+   $members = $dataBase->getMembers();
+
+    $f3->set('members',$members);
+
+    echo Template::instance()->render('pages/admin.html');
+});
 
 //run fat free
 $f3->run();

@@ -49,5 +49,5 @@ return array(
     'Web\\OAuth2' => $vendorDir . '/bcosca/fatfree-core/web/oauth2.php',
     'Web\\OpenID' => $vendorDir . '/bcosca/fatfree-core/web/openid.php',
     'Web\\Pingback' => $vendorDir . '/bcosca/fatfree-core/web/pingback.php',
-    'test' => $baseDir . '/classes/test.php',
+    'dbFunctions' => $baseDir . '/classes/dbFunctions.php',
 );
