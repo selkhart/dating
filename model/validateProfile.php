@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: toygan
+ * User: selkhart
  * Date: 2/2/18
  * Time: 7:40 PM
  */
@@ -41,9 +41,9 @@ if(!isset($state))
     $errorsProfile['state'] = "Please provide your state";
 }
 
-if(!validGenderLook($genderLook))
-{
-    $errorsProfile['genderLook'] = "Please provide a binary choice of attraction";
-}
+//if(!validGenderLook($genderLook))
+//{
+//    $errorsProfile['genderLook'] = "Please provide a binary choice of attraction";
+//}
 
 $successProfile = sizeof($errorsProfile) == 0;

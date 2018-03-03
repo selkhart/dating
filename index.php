@@ -167,10 +167,7 @@ $f3->route('GET|POST /pages/@pageName', function ($f3, $params) {
 
                         $primeMember = $_SESSION['primeMember'];
 
-                        $primeMember->setCominedActivities(implode(", ", array_merge($chosenIndoorActivities, $chosenOutdoorActivities)));
-
-                        $_SESSION['indoorActivities'] = $chosenIndoorActivities;
-                        $_SESSION['outdoorActivities'] = $chosenOutdoorActivities;
+                        $primeMember->setCombinedActivities(implode( array_merge($chosenIndoorActivities, $chosenOutdoorActivities), ", "));
 
                         $_SESSION['primeMember'] = $primeMember;
 
@@ -200,19 +197,17 @@ $f3->route('GET|POST /pages/results', function ($f3) {
 
 
         if (isset($_SESSION['primeMember']) && !empty($_SESSION['primeMember'])) {
-            $combineActivities = array_merge($_SESSION['outdoorActivities'], $_SESSION['indoorActivities']);
+//            $combineActivities = array_merge($_SESSION['outdoorActivities'], $_SESSION['indoorActivities']);
             $primeMember = $_SESSION['primeMember'];
 
             //interests
-            $f3->set('combineActivities', $combineActivities);
+//            $f3->set('combineActivities', $combineActivities);
             $f3->set('primeMember', 'primeMember');
         }
         else{
             $member = $_SESSION['memberUser'];
             $_SESSION['memberUser']->registerMember();
 
-            $primeMember = $_SESSION['primeMember'];
-            $_SESSION['primeMember']->registerMember();
         }
 
         $f3->set('fname', $_SESSION['fname']);
